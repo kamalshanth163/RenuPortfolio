@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Image Gallery</title>
+  </head>
+  <body>
+    <h1>Image Gallery</h1>
+
+    <form action="/api/images" method="POST" enctype="multipart/form-data">
+      <input type="file" name="image" required>
+      <button type="submit">Upload</button>
+    </form>
+
+    <ul id="image-list"></ul>
+    
+    <script>
+      function getImages() {
+        fetch('/api/images')
+          .then(response => response.json())
+          .then(images => {
+            const list = document.getElementById('image-list');
+            list.innerHTML = '';
+            images.forEach(image => {
+              const li = document.createElement('li');
+              li.textContent = image.filename;
+              const button = document.createElement('button');
+              button.textContent = 'Delete';
+              button.addEventListener('click', () => {
+                deleteImage(image.filename);
+              });
+              li.appendChild(button);
+              list.appendChild(li);
+            });
+          });
+      }
+    
+      function deleteImage(filename) {
+        fetch(`/api/images/${filename}`, { method: 'DELETE' })
+          .then(response => response.json())
+          .then(result => {
+            if (result.success) {
+              getImages();
+            }
+          });
+      }
+    
+      getImages();
+    </script>
+</body>
+</html>    
