@@ -85,42 +85,42 @@ function ImageGallery() {
       <div className='col-lg-4 left'>
 
         <div className='form-area'>
-          <div className='row'>
-            <h1>RENU</h1>
+          <div className='row row-header'>
+            <h1 className='logo'>RENU</h1>
           </div>
-          <div className='row'>
+          <div className="row row-footer">
+              <ul>
+                  <li>
+                      <a href="https://www.facebook.com/mvrk.nz" target="_blank"><i className="fa fa-facebook-square"></i></a>
+                  </li>
+              </ul>
+          </div>
+          <div className='row row-form'>
             <form onSubmit={handleSubmit}>
               <div>
-                <label htmlFor="file">Choose an image:</label>
+                {/* <label htmlFor="file">Choose an image:</label> */}
                 <input type="file" id="file" name="file" onChange={handleFileChange} />
               </div>
               <div>
-                <label htmlFor="title">Title:</label>
-                <input type="text" id="title"  name="title" value={title} onChange={handleChange} />
-                <label htmlFor="note">Note:</label>
-                <textarea type="text" id="note"  name="note" value={note} onChange={handleChange} />
+                {/* <label htmlFor="title">Title:</label> */}
+                <input type="text" id="title"  name="title" placeholder="Title" value={title} onChange={handleChange} />
+                {/* <label htmlFor="note">Note:</label> */}
+                <textarea type="text" id="note"  name="note" placeholder="Note" value={note} onChange={handleChange} />
+                <button type="submit">Upload</button>
               </div>
-              <button type="submit">Upload</button>
             </form>
-          </div>
-          <div class="row row-buttons">
-              <ul>
-                  <li>
-                      <a href="https://www.facebook.com/mvrk.nz" target="_blank"><i class="fa fa-facebook-square"></i></a>
-                  </li>
-              </ul>
           </div>
         </div>
 
           
       </div>
       <div className='col-lg-8 right'>
-        <div class="grid-container">
+        <div className="grid-container">
           {
             images.map((image, index) => {
             return (
-              <div class="item" key={index}>
-                <img class="image" src={image.data} />
+              <div className="item" key={index}>
+                <img className="image" src={image.data} />
               </div>
             )
             })
