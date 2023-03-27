@@ -1,0 +1,145 @@
+.page{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-gap: 10px;
+  height: 100vh;
+  padding: 10px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.item img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.image {
+  width: 500px;
+  height: 200px;
+}
+
+.form-area {
+  padding: 100px;
+  text-align: center;
+}
+
+.right {
+  overflow-y: scroll;
+  height: 630px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+label {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+input[type="file"] {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  padding: 8px;
+  background-color: #f1f1f1;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input[type="text"],
+textarea {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  padding: 8px;
+  background-color: #f1f1f1;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+button[type="submit"]:hover {
+  background-color: #3e8e41;
+}
+
+button[type="submit"]:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+input[type="file"]:focus,
+input[type="text"]:focus,
+textarea:focus {
+  background-color: #ddd;
+}
+
+
+.row-buttons {
+  padding: 80px 80px 20px !important;
+}
+.row-buttons ul {
+  margin: 0 auto !important;
+  text-align: center !important;
+}
+.row-buttons ul li{
+  display: inline-block;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Responsive styles */
+
+@media screen and (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(9, 1fr);
+  }
+}

@@ -62,7 +62,7 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
 // Get all images
 app.get('/images', (req, res) => {
   const directoryPath = path.join(__dirname, 'uploads');
-  
+
   fs.readdir(directoryPath, function(err, files) {
     if (err) {
       console.log(err);
@@ -92,7 +92,7 @@ app.get('/images', (req, res) => {
         });
       });
       Promise.all(imagePromises).then(images => {
-        res.json(images.reverse());
+        res.json(images);
       }).catch(err => {
         console.error(err);
         res.status(500).send(err);
