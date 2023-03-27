@@ -7,6 +7,8 @@ import './ImageGallery.css';
 const apiUrl = config.apiUrl;
 
 function ImageGallery() {
+  const [code, setCode] = useState('');
+
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState('');
   const [note, setNote] = useState('');
@@ -28,6 +30,9 @@ function ImageGallery() {
         break;
       case "note":
         setNote(value);
+        break;
+      case "code":
+        setCode(value);
         break;
       default:
         break;
@@ -55,6 +60,10 @@ function ImageGallery() {
     // }
     
   };
+
+  const handleLogin = () => {
+
+  }
 
   useEffect(() => {
     getAllImages();
@@ -88,6 +97,7 @@ function ImageGallery() {
           <div className='row row-header'>
             <h1 className='logo'>RENU</h1>
           </div>
+          <hr></hr>
           <div className="row row-footer">
               <ul>
                   <li>
@@ -96,17 +106,20 @@ function ImageGallery() {
               </ul>
           </div>
           <div className='row row-form'>
-            <form onSubmit={handleSubmit}>
-              <div>
-                {/* <label htmlFor="file">Choose an image:</label> */}
-                <input type="file" id="file" name="file" onChange={handleFileChange} />
-              </div>
+            <form className="login-form" onSubmit={handleLogin}>
               <div>
                 {/* <label htmlFor="title">Title:</label> */}
+                <input type="text" id="code" name="code" placeholder="Enter your code" value={code} onChange={handleChange} />
+                <button type="submit" className='login-btn'>Login</button>
+                <button type="submit" className='logout-btn'>Logout</button>
+              </div>
+            </form>
+            <form className='upload-form' onSubmit={handleSubmit}>
+              <div>
+                <input type="file" id="file" name="file" onChange={handleFileChange} />
                 <input type="text" id="title"  name="title" placeholder="Title" value={title} onChange={handleChange} />
-                {/* <label htmlFor="note">Note:</label> */}
                 <textarea type="text" id="note"  name="note" placeholder="Note" value={note} onChange={handleChange} />
-                <button type="submit">Upload</button>
+                <button type="submit" className='upload-btn'>Upload</button>
               </div>
             </form>
           </div>
