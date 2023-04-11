@@ -216,11 +216,19 @@ function ImageGallery() {
 
             {preview ? (           
               <div className="preview">
-                <button onClick={closePreview}>Close</button>
-                <img className="image" src={image.src} alt={title} />
-                <h2>{image.title}</h2>
-                <p>{image.note}</p>
-                <p>{image.date}</p>
+                <i onClick={closePreview} className="fa fa-close close-btn"></i><br></br>               
+                <div className="preview-body">
+                  <div className='row'>
+                    <div className='col-md-6 image-section'>
+                      <img className="preview-image" src={image.src} alt={title} />
+                    </div>     
+                    <div className='col-md-6 info-section'>
+                      <p className='date'>{image.date}</p>
+                      <h2 className='title'>{image.title}</h2>
+                      <p className='note'>{image.note}</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             ) : (
               ""
