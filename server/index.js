@@ -24,7 +24,7 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
         if (data.length !== 0) {
           images = JSON.parse(data.toString()).images;
         }
-        
+        console.log(file);
         const image = {
           id: images.length + 1, 
           name: `${images.length + 1}.${file.originalname.split('.')[1]}`,

@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import config from "../config.js";
 
-import './ImageGallery.css';
+import "./ImageGallery.css";
 
 const apiUrl = config.apiUrl;
 
 function ImageGallery() {
-
   const [secretCode, setSecretCode] = useState("Renu1980");
   const [loginCode, setLoginCode] = useState("");
 
@@ -17,11 +16,30 @@ function ImageGallery() {
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
 
   const [images, setImages] = useState([]);
-
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("logged-in"));
+
+  const [preview, setPreview] = useState(false);
+  const [image, setImage] = useState({
+    src: "",
+    title: "",
+    note: "",
+    date: "",
+  });
+
+  useEffect(() => {
+    getAllImages();
+  }, []);
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
+  };
+
+  const openPreview = () => {
+    setPreview(true);
+  };
+
+  const closePreview = () => {
+    setPreview(false);
   };
 
   const handleChange = (event) => {
@@ -77,27 +95,20 @@ function ImageGallery() {
     setLoggedIn(false);
   };
 
-  useEffect(() => {
-    getAllImages();
-  }, []);
-
   const getAllImages = () => {
     axios
       .get(apiUrl + "/images")
       .then((response) => {
-        response.data.sort((a, b) => {
-          if (a.id < b.id) {
-            return -1;
-          }
-          if (a.id > b.id) {
-            return 1;
-          }
-          return 0;
-        });
+        var sorted = response.data.sort((a, b) => b.image.id - a.image.id);
 
-        setImages(response.data.reverse());
+        setImages(sorted);
       })
       .catch((error) => console.error(error));
+  };
+
+  const handleImage = (image) => {
+    setImage({...image.image, src: image.data});
+    openPreview();
   };
 
   return (
@@ -153,9 +164,7 @@ function ImageGallery() {
                 </div>
               </form>
 
-              {
-                loggedIn 
-                ?
+              {loggedIn ? (
                 <form className="upload-form" onSubmit={handleSubmit}>
                   <div>
                     <input
@@ -185,9 +194,9 @@ function ImageGallery() {
                     </button>
                   </div>
                 </form>
-                :
+              ) : (
                 ""
-              }
+              )}
             </div>
           </div>
         </div>
@@ -195,13 +204,31 @@ function ImageGallery() {
           <div className="grid-container">
             {images.map((image, index) => {
               return (
-                <div className="item" key={index}>
-                  <img className="image" src={image.data} />
+                <div
+                  className="item"
+                  key={image.image.id}
+                  onClick={() => handleImage(image)}
+                >
+                  <img key={index} className="image" src={image.data} />
                 </div>
               );
             })}
+
+            {preview ? (           
+              <div className="preview">
+                <button onClick={closePreview}>Close</button>
+                <img className="image" src={image.src} alt={title} />
+                <h2>{image.title}</h2>
+                <p>{image.note}</p>
+                <p>{image.date}</p>
+              </div>
+            ) : (
+              ""
+            )}
+
           </div>
         </div>
+        
       </div>
     </div>
   );
