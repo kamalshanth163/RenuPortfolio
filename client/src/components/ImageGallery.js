@@ -10,7 +10,7 @@ function ImageGallery() {
   const [secretCode, setSecretCode] = useState("Renu1980");
   const [loginCode, setLoginCode] = useState("");
 
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState("");
   const [title, setTitle] = useState("");
   const [note, setNote] = useState("");
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));

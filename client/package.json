@@ -1,7 +1,6 @@
 {
   "name": "tech",
   "version": "0.1.0",
-  "homepage": "http://bibekshakya.com/demo/react/antdesign/tech",
   "private": true,
   "dependencies": {
     "@coreui/coreui": "^4.2.6",

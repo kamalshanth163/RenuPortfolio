@@ -27,6 +27,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .item img {
@@ -207,7 +208,6 @@ textarea:focus {
 .preview .info-section {
   padding: 40px;
   color: #111;
-  /* overflow: scroll; */
 }
 
 .preview .preview-image {
@@ -216,15 +216,16 @@ textarea:focus {
   border-radius: 20px;
 }
 
+.preview .date {
+  font-size: 20px;
+}
 .preview .title {
   font-size: 50px;
   font-weight: 900;
 }
 .preview .note {
   font-size: 20px;
-}
-.preview .date {
-  font-size: 20px;
+  margin-top: 20px;
 }
 
 
