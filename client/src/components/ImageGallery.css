@@ -35,7 +35,7 @@
   max-height: 100%;
 }
 
-.image {
+.post {
   width: 500px;
   height: 200px;
   border-radius: 10px;
@@ -240,7 +240,7 @@ textarea:focus {
   color: #111;
 }
 
-.preview .preview-image {
+.preview .preview-post {
   width: 100%;
   height: auto;
   border-radius: 20px;
@@ -258,6 +258,18 @@ textarea:focus {
   margin-top: 20px;
 }
 
+.message-area {
+  position: relative;
+  font-size: 24px;
+  height: 400px;
+  padding: 100px;
+}
+.message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
 
 

@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import config from "../config.js";
+import { useNavigate } from "react-router-dom";
 
 import "./ImageGallery.css";
+import { useRef } from 'react';
 
 const apiUrl = config.apiUrl;
 
 function ImageGallery() {
+  const navigate = useNavigate();
+
   const [secretCode, setSecretCode] = useState("Renu1980");
   const [loginCode, setLoginCode] = useState("");
 
@@ -15,19 +19,21 @@ function ImageGallery() {
   const [note, setNote] = useState("");
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
 
-  const [images, setImages] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("logged-in"));
 
   const [preview, setPreview] = useState(false);
-  const [image, setImage] = useState({
+  const [post, setPost] = useState({
     src: "",
     title: "",
     note: "",
     date: "",
   });
 
+  const fileRef = useRef(null);
+
   useEffect(() => {
-    getAllImages();
+    getAllPosts();
   }, []);
 
   const handleFileChange = (event) => {
@@ -64,23 +70,27 @@ function ImageGallery() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    fileRef.current.value = null;
+
     const formData = new FormData();
     formData.append("file", file);
     formData.append("title", title);
     formData.append("note", note);
     formData.append("date", date);
 
-    const response = await axios.post(apiUrl + "/api/upload", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-
-    setFile(null);
-    setNote("");
-    setTitle("");
-
-    getAllImages();
+    if (file) {
+      const response = await axios.post(apiUrl + "/api/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+  
+      setFile("");
+      setNote("");
+      setTitle("");
+  
+      getAllPosts();
+    }
   };
 
   const handleLogin = () => {
@@ -95,24 +105,31 @@ function ImageGallery() {
     setLoggedIn(false);
   };
 
-  const getAllImages = () => {
+  const getAllPosts = () => {
     axios
-      .get(apiUrl + "/images")
+      .get(apiUrl + "/posts")
       .then((response) => {
-        var sorted = response.data.sort((a, b) => b.image.id - a.image.id);
-
-        setImages(sorted);
+        var sorted = response.data.sort((a, b) => b.post.id - a.post.id);
+        setPosts(sorted);
       })
       .catch((error) => console.error(error));
   };
 
-  const handleImage = (image) => {
-    setImage({...image.image, src: image.data});
+  const handlePost = (post) => {
+    setPost({ ...post.post, src: post.data });
     openPreview();
   };
 
-  const handleDelete = () => {
-    console.log("deleted");
+  const handleDelete = (name) => {
+    axios
+      .delete(apiUrl + `/posts/${name}`)
+      .then((response) => {
+        closePreview();
+        getAllPosts();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -127,7 +144,7 @@ function ImageGallery() {
             <div className="row row-footer">
               <ul>
                 <li>
-                  <a href="https://www.facebook.com/mvrk.nz" target="_blank">
+                  <a href="https://www.facebook.com/profile.php?id=100090951083861" target="_blank">
                     <i className="fa fa-facebook-square"></i>
                   </a>
                 </li>
@@ -172,6 +189,7 @@ function ImageGallery() {
                 <form className="upload-form" onSubmit={handleSubmit}>
                   <div>
                     <input
+                      ref={fileRef} 
                       type="file"
                       id="file"
                       name="file"
@@ -206,52 +224,74 @@ function ImageGallery() {
         </div>
         <div className="col-lg-8 right">
           <div className="grid-container">
-            {images.map((image, index) => {
+            {posts.map((post, index) => {
               return (
                 <div
-                  className="item image-container"
-                  key={image.image.id}
-                  onClick={() => handleImage(image)}
+                  className="item post-container"
+                  key={post.post.id}
+                  onClick={() => handlePost(post)}
                 >
-                  <img key={index} className="image" src={image.data} />
+                  <img key={index} className="post" src={post.data} />
                 </div>
               );
             })}
 
-            {preview ? (           
+            {preview ? (
               <div className="preview">
-                <i onClick={closePreview} className="fa fa-close close-btn"></i><br></br>               
+                <i onClick={closePreview} className="fa fa-close close-btn"></i>
+                <br></br>
                 <div className="preview-body">
-                  <div className='row'>
-                    <div className='col-md-6 image-section'>
-                      <img className="preview-image" src={image.src} alt={title} />
-                    </div>     
-                    <div className='col-md-6 info-section'>
-                      <p className='date'>{image.date}</p>
-                      <h2 className='title'>{image.title}</h2>
-                      <p className='note'>{image.note}</p>
+                  <div className="row">
+                    <div className="col-md-6 post-section">
+                      <img
+                        className="preview-post"
+                        src={post.src}
+                        alt={title}
+                      />
+                    </div>
+                    <div className="col-md-6 info-section">
+                      <p className="date">{post.date}</p>
+                      <h2 className="title">{post.title}</h2>
+                      <p className="note">{post.note}</p>
                     </div>
                   </div>
 
-                  {loggedIn ? 
-                  <div>
-                    <hr className='divider'></hr>
-                    <div className='row'>
-                      <div className='delete' onClick={() => handleDelete()}>
-                        <i class="fa fa-trash delete-icon"></i>
-                        <span className='delete-label'>Delete this post</span>
+                  {loggedIn ? (
+                    <div>
+                      <hr className="divider"></hr>
+                      <div className="row">
+                        <div
+                          className="delete"
+                          onClick={() => handleDelete(post.name)}
+                        >
+                          <i className="fa fa-trash delete-icon"></i>
+                          <span className="delete-label">Delete this Post</span>
+                        </div>
                       </div>
                     </div>
-                  </div> : ""}
+                  ) : (
+                    ""
+                  )}
                 </div>
               </div>
             ) : (
               ""
             )}
-
           </div>
+
+          {posts.length < 1 
+            ?
+            <div className='message-area'>
+              <div className='message'>
+                <h1>No Posts Found 🧐</h1><br></br>
+		            <p>There are no posts to display at the moment. Upload a post to start seeing content here.</p>
+		            <p>Upload an Image, Add a Title and a Note.</p>
+		            <p>Click on a Post, Preview and Manage.</p>
+              </div>
+            </div> 
+            : ""
+          } 
         </div>
-        
       </div>
     </div>
   );
