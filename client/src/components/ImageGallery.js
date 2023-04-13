@@ -144,7 +144,11 @@ function ImageGallery() {
             <div className="row row-footer">
               <ul>
                 <li>
-                  <a href="https://www.facebook.com/profile.php?id=100090951083861" target="_blank" rel="noreferrer">
+                  <a
+                    href="https://www.facebook.com/profile.php?id=100090951083861"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     <i className="fa fa-facebook-square"></i>
                   </a>
                 </li>
@@ -162,6 +166,7 @@ function ImageGallery() {
                         placeholder="Enter your code"
                         value={loginCode}
                         onChange={handleChange}
+                        autoComplete="off"
                       />
                       <button
                         type="submit"
@@ -189,7 +194,7 @@ function ImageGallery() {
                 <form className="upload-form" onSubmit={handleSubmit}>
                   <div>
                     <input
-                      ref={fileRef} 
+                      ref={fileRef}
                       type="file"
                       id="file"
                       name="file"
@@ -231,7 +236,7 @@ function ImageGallery() {
                   key={post.post.id}
                   onClick={() => handlePost(post)}
                 >
-                  <img key={index} className="post" src={post.data} alt=''/>
+                  <img key={index} className="post" src={post.data} alt="" />
                 </div>
               );
             })}
@@ -279,18 +284,22 @@ function ImageGallery() {
             )}
           </div>
 
-          {posts.length < 1 
-            ?
-            <div className='message-area'>
-              <div className='message'>
-                <h1>No Posts Found 🧐</h1><br></br>
-		            <p>There are no posts to display at the moment. Upload a post to start seeing content here.</p>
-		            <p>Upload an Image, Add a Title and a Note.</p>
-		            <p>Click on a Post, Preview and Manage.</p>
+          {posts.length < 1 ? (
+            <div className="message-area">
+              <div className="message">
+                <h1>No Posts Found 🧐</h1>
+                <br></br>
+                <p>
+                  There are no posts to display at the moment. Upload a post to
+                  start seeing content here.
+                </p>
+                <p>Upload an Image, Add a Title and a Note.</p>
+                <p>Click on a Post, Preview and Manage.</p>
               </div>
-            </div> 
-            : ""
-          } 
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </div>
