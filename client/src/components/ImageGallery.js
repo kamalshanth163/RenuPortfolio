@@ -111,6 +111,10 @@ function ImageGallery() {
     openPreview();
   };
 
+  const handleDelete = () => {
+    console.log("deleted");
+  };
+
   return (
     <div className="page">
       <div className="row">
@@ -205,7 +209,7 @@ function ImageGallery() {
             {images.map((image, index) => {
               return (
                 <div
-                  className="item"
+                  className="item image-container"
                   key={image.image.id}
                   onClick={() => handleImage(image)}
                 >
@@ -228,6 +232,17 @@ function ImageGallery() {
                       <p className='note'>{image.note}</p>
                     </div>
                   </div>
+
+                  {loggedIn ? 
+                  <div>
+                    <hr className='divider'></hr>
+                    <div className='row'>
+                      <div className='delete' onClick={() => handleDelete()}>
+                        <i class="fa fa-trash delete-icon"></i>
+                        <span className='delete-label'>Delete this post</span>
+                      </div>
+                    </div>
+                  </div> : ""}
                 </div>
               </div>
             ) : (
