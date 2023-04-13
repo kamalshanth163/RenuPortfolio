@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import config from "../config.js";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 import "./ImageGallery.css";
 import { useRef } from 'react';
@@ -9,15 +9,15 @@ import { useRef } from 'react';
 const apiUrl = config.apiUrl;
 
 function ImageGallery() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const [secretCode, setSecretCode] = useState("Renu1980");
+  const [secretCode] = useState("Renu1980");
   const [loginCode, setLoginCode] = useState("");
 
   const [file, setFile] = useState("");
   const [title, setTitle] = useState("");
   const [note, setNote] = useState("");
-  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+  const [date] = useState(new Date().toISOString().slice(0, 10));
 
   const [posts, setPosts] = useState([]);
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("logged-in"));
@@ -79,7 +79,7 @@ function ImageGallery() {
     formData.append("date", date);
 
     if (file) {
-      const response = await axios.post(apiUrl + "/api/upload", formData, {
+      await axios.post(apiUrl + "/api/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -144,7 +144,7 @@ function ImageGallery() {
             <div className="row row-footer">
               <ul>
                 <li>
-                  <a href="https://www.facebook.com/profile.php?id=100090951083861" target="_blank">
+                  <a href="https://www.facebook.com/profile.php?id=100090951083861" target="_blank" rel="noreferrer">
                     <i className="fa fa-facebook-square"></i>
                   </a>
                 </li>
@@ -231,7 +231,7 @@ function ImageGallery() {
                   key={post.post.id}
                   onClick={() => handlePost(post)}
                 >
-                  <img key={index} className="post" src={post.data} />
+                  <img key={index} className="post" src={post.data} alt=''/>
                 </div>
               );
             })}
