@@ -86,7 +86,7 @@ function ImageGallery() {
         },
       })
       .then((response) => {
-
+        
       })
       .catch((error) => console.error(error));
 
