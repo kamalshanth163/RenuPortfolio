@@ -82,8 +82,8 @@ app.get("/posts", (req, res) => {
                 const base64 = Buffer.from(data).toString("base64");
 
                 const postData = {
-                  filename: file,
-                  data: `data:image/png;base64,${base64}`,
+                  // filename: file,
+                  // data: `data:image/png;base64,${base64}`,
                   post: post,
                 };
 
@@ -111,6 +111,13 @@ app.delete("/posts/:name", (req, res) => {
   deletePostById(id);
   deleteImage(`${__dirname}/uploads`, name);
   res.status(200).send("Record deleted successfully.");
+});
+
+// Get image
+app.get("/images/:name", (req, res) => {
+  const imagePath = path.join(__dirname, "uploads", req.params.name);
+  const imageStream = fs.createReadStream(imagePath);
+  imageStream.pipe(res);
 });
 
 const getPostDataById = (id, callback) => {

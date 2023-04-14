@@ -24,6 +24,7 @@ function ImageGallery() {
 
   const [preview, setPreview] = useState(false);
   const [post, setPost] = useState({
+    name: "",
     src: "",
     title: "",
     note: "",
@@ -84,11 +85,11 @@ function ImageGallery() {
           "Content-Type": "multipart/form-data",
         },
       });
-  
+
       setFile("");
       setNote("");
       setTitle("");
-  
+
       getAllPosts();
     }
   };
@@ -236,7 +237,12 @@ function ImageGallery() {
                   key={post.post.id}
                   onClick={() => handlePost(post)}
                 >
-                  <img key={index} className="post" src={post.data} alt="" />
+                  <img
+                    key={index}
+                    className="post"
+                    src={`${apiUrl}/images/${post.post.name}`}
+                    alt=""
+                  />
                 </div>
               );
             })}
@@ -250,7 +256,7 @@ function ImageGallery() {
                     <div className="col-md-6 post-section">
                       <img
                         className="preview-post"
-                        src={post.src}
+                        src={`${apiUrl}/images/${post.name}`}
                         alt={title}
                       />
                     </div>
