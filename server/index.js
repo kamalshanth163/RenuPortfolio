@@ -59,47 +59,6 @@ app.get('/posts', (req, res) => {
   res.json(posts);
 });
 
-// Get all posts
-// app.get("/posts", (req, res) => {
-//   const directoryPath = path.join(__dirname, "uploads");
-
-//   fs.readdir(directoryPath, function (err, files) {
-//     if (err) {
-//       console.log(err);
-//       res.status(500).send(err);
-//     } else {
-//       const postPromises = files
-//         .filter((file) => {
-//           return (
-//             file.endsWith(".jpg") ||
-//             file.endsWith(".jpeg") ||
-//             file.endsWith(".png")
-//           );
-//         })
-//         .map((file) => {
-//           return new Promise((resolve, reject) => {
-//             getPostDataById(file.split(".")[0], (err, post) => {
-//               if (err) {
-//                 console.error(err);
-//                 reject(err);
-//               } else {
-//                 resolve(post);
-//               }
-//             });
-//           });
-//         });
-//       Promise.all(postPromises)
-//         .then((posts) => {
-//           res.json(posts);
-//         })
-//         .catch((err) => {
-//           console.error(err);
-//           res.status(500).send(err);
-//         });
-//     }
-//   });
-// });
-
 // Delete a post
 app.delete("/posts/:name", (req, res) => {
   const name = req.params.name;
@@ -115,19 +74,6 @@ app.get("/images/:name", (req, res) => {
   const imageStream = fs.createReadStream(imagePath);
   imageStream.pipe(res);
 });
-
-const getPostDataById = (id, callback) => {
-  fs.readFile("data.json", (err, data) => {
-    if (err) {
-      console.error(err);
-      callback(err, null);
-    } else {
-      const posts = JSON.parse(data.toString()).posts;
-      const post = posts.find((i) => i.id == id);
-      callback(null, post);
-    }
-  });
-};
 
 const deletePostById = (id) => {
   const data = JSON.parse(fs.readFileSync("data.json", "utf8"));

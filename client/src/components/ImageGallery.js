@@ -86,7 +86,7 @@ function ImageGallery() {
         },
       })
       .then((response) => {
-        console.log("posts: " + response.data);
+
       })
       .catch((error) => console.error(error));
 
@@ -112,12 +112,10 @@ function ImageGallery() {
   };
 
   const getAllPosts = () => {
-    console.log("getting all posts")
     axios
       .get(apiUrl + "/posts")
       .then((response) => {
         var sorted = response.data.sort((a, b) => b.id - a.id);
-        console.log(sorted)
         setPosts(sorted);
       })
       .catch((error) => console.error(error));
