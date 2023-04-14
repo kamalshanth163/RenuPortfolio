@@ -80,17 +80,22 @@ function ImageGallery() {
     formData.append("date", date);
 
     if (file) {
-      await axios.post(apiUrl + "/api/upload", formData, {
+      axios.post(apiUrl + "/api/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      });
+      })
+      .then((response) => {
+        console.log("posts: " + response.data);
+      })
+      .catch((error) => console.error(error));
 
       setFile("");
       setNote("");
       setTitle("");
 
       getAllPosts();
+      window.location.reload();
     }
   };
 
@@ -107,17 +112,19 @@ function ImageGallery() {
   };
 
   const getAllPosts = () => {
+    console.log("getting all posts")
     axios
       .get(apiUrl + "/posts")
       .then((response) => {
-        var sorted = response.data.sort((a, b) => b.post.id - a.post.id);
+        var sorted = response.data.sort((a, b) => b.id - a.id);
+        console.log(sorted)
         setPosts(sorted);
       })
       .catch((error) => console.error(error));
   };
 
   const handlePost = (post) => {
-    setPost({ ...post.post, src: post.data });
+    setPost({ ...post, src: post.data });
     openPreview();
   };
 
@@ -127,6 +134,7 @@ function ImageGallery() {
       .then((response) => {
         closePreview();
         getAllPosts();
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error);
@@ -234,13 +242,13 @@ function ImageGallery() {
               return (
                 <div
                   className="item post-container"
-                  key={post.post.id}
+                  key={post.id}
                   onClick={() => handlePost(post)}
                 >
                   <img
                     key={index}
                     className="post"
-                    src={`${apiUrl}/images/${post.post.name}`}
+                    src={`${apiUrl}/images/${post.name}`}
                     alt=""
                   />
                 </div>

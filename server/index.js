@@ -6,12 +6,13 @@ const fs = require("fs");
 
 const app = express();
 const upload = multer({ dest: 'uploads/' });
+const data = require('./data.json');
 
 const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 
-// Upload an post
+// Upload a post
 app.post("/api/upload", upload.single("file"), (req, res) => {
   const file = req.file;
 
@@ -47,62 +48,57 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
           console.log("Data saved to file");
         }
       });
+      res.send(JSON.parse(data.toString()).posts);
     }
   });
-
-  res.send("File saved successfully");
 });
-// });
+
+// Get posts data
+app.get('/posts', (req, res) => {
+  const posts = data.posts;
+  res.json(posts);
+});
 
 // Get all posts
-app.get("/posts", (req, res) => {
-  const directoryPath = path.join(__dirname, "uploads");
+// app.get("/posts", (req, res) => {
+//   const directoryPath = path.join(__dirname, "uploads");
 
-  fs.readdir(directoryPath, function (err, files) {
-    if (err) {
-      console.log(err);
-      res.status(500).send(err);
-    } else {
-      const postPromises = files
-        .filter((file) => {
-          return (
-            file.endsWith(".jpg") ||
-            file.endsWith(".jpeg") ||
-            file.endsWith(".png")
-          );
-        })
-        .map((file) => {
-          return new Promise((resolve, reject) => {
-            getPostDataById(file.split(".")[0], (err, post) => {
-              if (err) {
-                console.error(err);
-                reject(err);
-              } else {
-                const data = fs.readFileSync(path.join(directoryPath, file));
-                const base64 = Buffer.from(data).toString("base64");
-
-                const postData = {
-                  // filename: file,
-                  // data: `data:image/png;base64,${base64}`,
-                  post: post,
-                };
-
-                resolve(postData);
-              }
-            });
-          });
-        });
-      Promise.all(postPromises)
-        .then((posts) => {
-          res.json(posts);
-        })
-        .catch((err) => {
-          console.error(err);
-          res.status(500).send(err);
-        });
-    }
-  });
-});
+//   fs.readdir(directoryPath, function (err, files) {
+//     if (err) {
+//       console.log(err);
+//       res.status(500).send(err);
+//     } else {
+//       const postPromises = files
+//         .filter((file) => {
+//           return (
+//             file.endsWith(".jpg") ||
+//             file.endsWith(".jpeg") ||
+//             file.endsWith(".png")
+//           );
+//         })
+//         .map((file) => {
+//           return new Promise((resolve, reject) => {
+//             getPostDataById(file.split(".")[0], (err, post) => {
+//               if (err) {
+//                 console.error(err);
+//                 reject(err);
+//               } else {
+//                 resolve(post);
+//               }
+//             });
+//           });
+//         });
+//       Promise.all(postPromises)
+//         .then((posts) => {
+//           res.json(posts);
+//         })
+//         .catch((err) => {
+//           console.error(err);
+//           res.status(500).send(err);
+//         });
+//     }
+//   });
+// });
 
 // Delete a post
 app.delete("/posts/:name", (req, res) => {
